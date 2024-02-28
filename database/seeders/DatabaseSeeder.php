@@ -27,6 +27,13 @@ class DatabaseSeeder extends Seeder
              'slug' => 'teachers-union',
          ]);
 
+         \App\Models\Setting::create([
+            'company_name'  =>'Company Name',
+            'address'       =>'Company Address',
+            'email'         =>'info@example.com',
+            'logo'          =>'/images/logo.png',
+         ]);
+
          DB::table('project_user')->insert([
              'user_id' => 1,
              'project_id'  => 1,

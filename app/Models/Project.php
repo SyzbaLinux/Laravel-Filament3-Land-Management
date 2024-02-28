@@ -36,4 +36,10 @@ class Project extends Model
         return $this->hasMany(AgreementOfSale::class);
     }
 
+
+    public function settings(): hasMany
+    {
+        return $this->hasMany(AgreementOfSale::class);
+    }
+
 }

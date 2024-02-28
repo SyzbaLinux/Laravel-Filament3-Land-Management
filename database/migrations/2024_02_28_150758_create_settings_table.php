@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained();
             $table->string('company_name');
             $table->mediumText('address');
             $table->string('email');
