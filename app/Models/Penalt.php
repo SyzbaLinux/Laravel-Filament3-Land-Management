@@ -6,9 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Stand extends Model
+class Penalt extends Model
 {
     public function project(): belongsTo
     {
@@ -21,13 +20,12 @@ class Stand extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function payments(): hasMany
+    public function stand(): belongsTo
+    {
+        return $this->belongsTo(Stand::class);
+    }
+    public function payment(): hasMany
     {
         return $this->hasMany(Payment::class);
-    }
-
-    public function agreementOfSale(): belongsTo
-    {
-        return $this->belongsTo(AgreementOfSale::class);
     }
 }

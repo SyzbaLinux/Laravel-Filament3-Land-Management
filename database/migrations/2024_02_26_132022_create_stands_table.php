@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->nullable();
             $table->foreignId('invoice_id')->nullable();
+            $table->foreignId('agreement_of_sale_id')->nullable();
             $table->foreignId('project_id');
             $table->string('stand_number')->nullable();
             $table->string('square_metres')->nullable();

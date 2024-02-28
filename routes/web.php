@@ -14,3 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/admin/login')->name('login');
+
+
+Route::get('/payment-receipt/{payment}', [\App\Http\Controllers\PaymentController::class,'receipt'])
+    ->name('payment-receipt');

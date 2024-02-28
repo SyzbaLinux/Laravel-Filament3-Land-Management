@@ -24,6 +24,7 @@ class AgreementofSaleCreatedLister implements ShouldQueue
          $stand = Stand::find($event->agreementOfSale->stand_id);
          $stand->is_taken = 1;
          $stand->client_id = $event->agreementOfSale->client_id;
+         $stand->agreement_of_sale_id = $event->agreementOfSale->id;
          $stand->save();
     }
 }
