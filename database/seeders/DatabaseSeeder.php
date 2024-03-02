@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
          ]);
 
          \App\Models\Setting::create([
+            'project_id'    =>1,
             'company_name'  =>'Company Name',
             'address'       =>'Company Address',
             'email'         =>'info@example.com',
