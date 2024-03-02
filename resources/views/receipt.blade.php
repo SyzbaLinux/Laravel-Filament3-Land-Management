@@ -9,37 +9,37 @@
 </head>
 
 <body>
-    <div class="container">
-       <div class="row">
-           <div class="col-md-2">
-           </div>
-           <div class="col-md-8">
-               <div style="padding: 20px; font-family:'Arimo',serif"  >
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <div style="padding: 20px; font-family:'Arimo',serif"  >
 
-                   <table style="width:100%">
-                       <tr style="vertical-align: center">
-                           <td style="width:40%;padding-left: 13px">
-                               <img
-                                   src="{{ asset('/images/logo.png') }}"
-                                   alt="logo"
-                                   style="width: 100px;"
-                               />
-                           </td>
-                           <td style="width:60%;text-align: right">
-                               <h3>Company Name</h3>
-                               <p>Moto</p>
-                               <p style="font-size: 13px">Description</p>
-                           </td>
-                       </tr>
-                   </table>
+                <table style="width:100%">
+                    <tr style="vertical-align: center">
+                        <td style="width:40%;padding-left: 13px">
+                            <img
+                                src="{{ asset('/images/logo.png') }}"
+                                alt="logo"
+                                style="width: 100px;"
+                            />
+                        </td>
+                        <td style="width:60%;text-align: right">
+                            <h3>Company Name</h3>
+                            <p>Moto</p>
+                            <p style="font-size: 13px">Description</p>
+                        </td>
+                    </tr>
+                </table>
 
-                   <div style="text-align: center; padding: 5px">
-                       Computer Generated, Powered By <a target="_blank" href="https://acxel.online/">Acxel Accounting</a>
-                   </div>
-               </div>
-           </div>
-       </div>
+                <div style="text-align: center; padding: 5px">
+                    Computer Generated, Powered By <a target="_blank" href="https://acxel.online/">Acxel Accounting</a>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </body>
 
 </html>

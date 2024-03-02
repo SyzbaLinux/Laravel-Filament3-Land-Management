@@ -120,21 +120,16 @@ class AgreementOfSaleResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index'    => Pages\ListAgreementOfSales::route('/'),
-            'create'   => Pages\CreateAgreementOfSale::route('/create'),
-            'edit'     => Pages\EditAgreementOfSale::route('/{record}/edit'),
-            'view'     => Pages\ViewAgreemnt::route('/{record}/view'),
-            'payments' => Pages\AgreementPaymentStand::route('/{record}/payments'),
+            'index'     => Pages\ListAgreementOfSales::route('/'),
+            'create'    => Pages\CreateAgreementOfSale::route('/create'),
+            'edit'      => Pages\EditAgreementOfSale::route('/{record}/edit'),
+            'view'      => Pages\ViewAgreemnt::route('/{record}/view'),
+            'payments'  => Pages\AgreementPaymentStand::route('/{record}/payments'),
+            'statement' => Pages\AgreementPaymentsStatement::route('/{record}/statement'),
+            'penalties' => Pages\AgreementPaymentsPenalties::route('/{record}/penalties'),
         ];
     }
 
@@ -143,6 +138,8 @@ class AgreementOfSaleResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewAgreemnt::class,
             Pages\AgreementPaymentStand::class,
+            Pages\AgreementPaymentsPenalties::class,
+            Pages\AgreementPaymentsStatement::class,
             Pages\EditAgreementOfSale::class,
         ]);
     }

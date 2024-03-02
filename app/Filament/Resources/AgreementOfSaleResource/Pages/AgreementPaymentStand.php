@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AgreementOfSaleResource\Pages;
 
 use App\Filament\Resources\AgreementOfSaleResource;
+use App\Filament\Resources\PaymentResource;
 use App\Models\Payment;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
@@ -33,7 +34,7 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
             ->query(
                 Payment::query()
                     ->select('payments.*') // Adjust based on your actual column names
-                    ->join('stands', 'stands.id', '=', 'payments.stand_id')
+                    ->join('stands', 'stands.stand_number', '=', 'payments.stand_number')
                     ->where('stands.agreement_of_sale_id', $this->record->id) // Assuming $this->record is the current AgreementOfSale instance
             )
             ->columns([
@@ -47,9 +48,8 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
                 ViewAction::make('Edit')
                     ->button()
                     ->color('success')
-                    ->action(function ($record) {
-                        $this->selectedPaymentId = $record->id;
-                        $this->dispatchBrowserEvent('open-modal'); // Optional: if you're using slideOver for showing details in a modal.
+                    ->url(function ($record){
+                        return PaymentResource::getUrl('edit',[$record->id]);
                     }),
 
                 ViewAction::make('print')
@@ -60,14 +60,4 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
             ]);
     }
 
-    public function infolist(Infolist $infolist): Infolist
-    {
-        $payment = Payment::find($this->selectedPaymentId);
-
-        return $infolist->schema([
-            TextEntry::make('receipt_date')
-                ->label('Date Paid')
-                ->state($payment ? $payment->receipt_date->format('Y-m-d') : null),
-        ]);
-    }
 }

@@ -29,14 +29,24 @@ class PaymentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('client_id')
-                    ->relationship('client','name')
+                    ->relationship('client','first_name')
                     ->preload()
                     ->label('Select Client')
                     ->searchable()
                     ->columnSpan(4),
 
-                Forms\Components\Select::make('stand_id')
-                    ->relationship('stand','stand_number')
+                Forms\Components\Select::make('stand_number')
+                    ->relationship(
+                        'stand',
+                        'stand_number',
+                        modifyQueryUsing: function (Builder $query, Get $get){
+                            $client = $get('client_id');
+                            if($client){
+                                $query->whereNotNull('stand_number')->where('client_id',$client);
+                            }else{
+                                $query->where('stand_number','0.2NULL'); //0.2 coz no stand number has that number
+                            }},
+                    )
                     ->preload()
                     ->label('Select Stand')
                     ->searchable()
@@ -92,11 +102,14 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('client.first_name')->searchable()->label('Name'),
-                Tables\Columns\TextColumn::make('client.last_name')->searchable()->label('Surname'),
-                Tables\Columns\TextColumn::make('receipt_date')->searchable()->date(),
-                Tables\Columns\TextColumn::make('stand.stand_number')->searchable(),
-                Tables\Columns\TextColumn::make('amount_paid')->prefix('$')->searchable(),
+                Tables\Columns\TextColumn::make('client.full_name')
+                    ->label('Client Name')
+                    ->searchable(['first_name', 'last_name'])
+                    ->sortable()
+                    ->getStateUsing(fn ($record) => $record->client->first_name . ' ' . $record->client->last_name),
+                Tables\Columns\TextColumn::make('receipt_date')->searchable()->date()->sortable(),
+                Tables\Columns\TextColumn::make('stand_number')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('amount_paid')->prefix('$')->searchable()->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button(),
@@ -107,7 +120,8 @@ class PaymentResource extends Resource
                 ImportAction::make()
                     ->importer(PaymentsImporter::class)
                     ->label('Import Payments')
-            ]);
+            ])
+            ;
     }
 
     public static function getRelations(): array

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained();
-            $table->foreignId('client_id')->constrained();
-            $table->foreignId('stand_id')->nullable()->constrained();
+            $table->foreignId('project_id');
+            $table->foreignId('client_id');
+            $table->foreignId('stand_number')->nullable();
             $table->foreignId('invoice_id')->nullable();
             $table->string('receipt_number')->nullable();
             $table->date('receipt_date');

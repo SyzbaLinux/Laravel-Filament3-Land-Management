@@ -16,7 +16,7 @@ class PaymentsImporter extends Importer
         return [
             ImportColumn::make('project_id'),
             ImportColumn::make('client_id'),
-            ImportColumn::make('stand_id'),
+            ImportColumn::make('stand_number'),
             ImportColumn::make('receipt_number'),
             ImportColumn::make('receipt_date'),
             ImportColumn::make('amount_paid'),
