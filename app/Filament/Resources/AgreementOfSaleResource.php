@@ -23,7 +23,7 @@ use Filament\Infolists\Infolist;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\Page;
 
-class AgreementOfSaleResource extends Resource
+class  AgreementOfSaleResource extends Resource
 {
     protected static ?string $model = AgreementOfSale::class;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
@@ -87,8 +87,6 @@ class AgreementOfSaleResource extends Resource
 
                 Forms\Components\FileUpload::make('document')
                     ->columnSpan(4),
-
-
 
             ])->columns(12);
     }
