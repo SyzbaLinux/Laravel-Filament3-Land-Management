@@ -8,6 +8,7 @@ use App\Filament\Resources\AgreementOfSaleResource\RelationManagers;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Models\AgreementOfSale;
 use App\Models\Client;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -43,7 +44,6 @@ class AgreementOfSaleResource extends Resource
                     ->columnSpan(4),
 
                 Forms\Components\Select::make('stand_id')
-                    ->relationship('stand','stand_number')
                     ->preload()
                     ->required()
                     ->label('Select Stand')
@@ -87,6 +87,8 @@ class AgreementOfSaleResource extends Resource
 
                 Forms\Components\FileUpload::make('document')
                     ->columnSpan(4),
+
+
 
             ])->columns(12);
     }
