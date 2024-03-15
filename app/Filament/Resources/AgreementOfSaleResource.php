@@ -29,6 +29,7 @@ class  AgreementOfSaleResource extends Resource
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     protected static ?string $navigationIcon = 'agreementofsale';
+    protected static ?string $navigationLabel = 'Clients & Contracts';
 
     public static function form(Form $form): Form
     {

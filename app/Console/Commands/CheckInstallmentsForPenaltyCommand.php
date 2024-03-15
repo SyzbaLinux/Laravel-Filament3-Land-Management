@@ -36,33 +36,35 @@ class CheckInstallmentsForPenaltyCommand extends Command
     public   function checkInstallmentsForPenalty()
     {
 
-
         // Get the current month and year
         $currentMonth = intval(date('m'));
         $currentYear = intval(date('Y'));
 
-        // Query installments that meet the conditions
-        $installments = Installment::where('month', '<=', $currentMonth)
-            ->where('year', '<=', $currentYear)
-            ->whereNull('payment_id')
-            ->orWhereHas('payment', function ($query) {
-                $query->where('is_paid_infull', '=', 0);
-            })
-            ->get();
+// Query installments that meet the conditions in batches of 100
+        Installment::where(function ($query) use ($currentMonth, $currentYear) {
+            $query->where('month', '<=', $currentMonth)
+                ->where('year', '<=', $currentYear)
+                ->whereNull('payment_id')
+                ->orWhereHas('payment', function ($query) {
+                    $query->where('is_paid_infull', '=', 0);
+                });
 
-        Log::info('Checking Started '.$installments->count().' records');
+        })->chunk(100, function ($installments) {
 
-        // For each installment, create a penalty if payment doesn't exist
-        foreach ($installments as $installment) {
 
+
+            foreach ($installments as $installment ){
 
                 // Check if a penalty already exists for this installment
-                $existingPenalty = Penalt::query()
-                    ->where('generated_for_month', $installment->month)
+                $existingPenalty = Penalt::where('generated_for_month', $installment->month)
                     ->where('generated_for_year', $installment->year)
+                    ->where('agreement_of_sale_id', $installment->agreement_of_sale_id)
                     ->first();
 
-                if (!$existingPenalty) {
+//                Log::info('record Found ' .$existingPenalty . ' rec');
+
+                if(!$existingPenalty){
+
                     // Create a penalty
                     $agreement = AgreementOfSale::find($installment->agreement_of_sale_id);
                     //penalty
@@ -73,13 +75,23 @@ class CheckInstallmentsForPenaltyCommand extends Command
                         'agreement_of_sale_id'  => $installment->agreement_of_sale_id,
                         'percentage'            => 10, // Set your percentage here
                         'date_generated'        => now(),
-                        'amount_charged'        =>  (10/100) * $agreement->monthly_payment, // Set your amount charged here
+                        'amount_charged'        => (10 / 100) * $agreement->monthly_payment, // Set your amount charged here
                         'generated_for_month'   => $installment->month,
                         'generated_for_year'    => $installment->year
                     ]);
                 }
+            }
 
-        }
+            // For each installment, create a penalty if payment doesn't exist
+//            foreach ($installments as $installment) {
+//
+//                if (!$existingPenalty) {
+//
+//                }
+//            }
+        });
+
+
     }
 
 }

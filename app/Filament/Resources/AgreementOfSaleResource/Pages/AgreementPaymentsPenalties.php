@@ -7,6 +7,7 @@ use App\Models\AgreementOfSale;
 use App\Models\Installment;
 use App\Models\Payment;
 use App\Models\Penalt;
+use Carbon\Carbon;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
@@ -48,11 +49,16 @@ class AgreementPaymentsPenalties extends ViewRecord implements HasTable
                     ->where('agreement_of_sale_id', $this->record->id) // Assuming $this->record is the current AgreementOfSale instance
             )
             ->columns([
-                TextColumn::make('date_generated')->date()->label('Date Generated'),
+                TextColumn::make('generated_for_year')
+                    ->label('Penalty for(Month Year)')
+                    ->searchable(['generated_for_year', 'generated_for_month'])
+                    ->sortable()
+                    ->getStateUsing(fn ($record) => date('M', mktime(0, 0, 0, $record->generated_for_month, 10))  . '-' . $record->generated_for_year),
                 TextColumn::make('percentage')->suffix('%'),
                 TextColumn::make('amount_charged')->prefix('$'),
                 TextColumn::make('amount_paid')->prefix('$'),
                 TextColumn::make('date_of_payment')->date(),
+                TextColumn::make('date_generated')->date()->label('Generated On'),
             ])
             ->actions([
                     EditAction::make()
@@ -150,6 +156,12 @@ class AgreementPaymentsPenalties extends ViewRecord implements HasTable
 
                         ])
                         ->slideOver()
+                        ->button(),
+
+                    ViewAction::make()
+                        ->icon('payments')
+                        ->label('Link/Add Payment')
+                        ->form([])
                         ->button(),
 
                     DeleteAction::make()
