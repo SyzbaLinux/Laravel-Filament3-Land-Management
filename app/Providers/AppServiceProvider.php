@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Installment;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Database\Eloquent\Model;
@@ -27,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
         FilamentAsset::register([
             Css::make('custom-stylesheet', __DIR__ . '/../../resources/css/custom.css'),
         ]);
+
     }
 }

@@ -83,8 +83,9 @@ class StandResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('client.first_name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('client.last_name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('client.first_name')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('stand_number')->sortable()->label('Stand No')->searchable(),
                 Tables\Columns\TextColumn::make('square_metres')->sortable()->label('Size')->suffix('sqm')->searchable(),
                 Tables\Columns\TextColumn::make('is_taken')->sortable()

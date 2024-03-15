@@ -14,6 +14,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use Illuminate\Support\Carbon; // Import Carbon for date manipulation
+use Filament\Facades\Filament;
 
 class StatsOverview extends BaseWidget
 {
@@ -21,23 +22,23 @@ class StatsOverview extends BaseWidget
     {
 
         return [
-            Stat::make('Clients', Client::count())
+            Stat::make('Clients', Client::where('project_id',Filament::getTenant()->id)->count())
                  ->icon('tenants')
                  ->description('Total Clients')
                  ->color('success'),
 
-            Stat::make('Stands', Stand::count())
+            Stat::make('Stands', Stand::where('project_id',Filament::getTenant()->id)->count())
                 ->icon('shop')
                 ->description('Total Stands Recorded')
                  ->color('primary'),
 
 
-            Stat::make('Sales', AgreementOfSale::count())
+            Stat::make('Sales', AgreementOfSale::where('project_id',Filament::getTenant()->id)->count())
                 ->icon('tenants')
                 ->description('Total Stands Sold')
                 ->color('secondary'),
 
-            Stat::make('Payments', '$ '.Payment::sum('amount_paid'))
+            Stat::make('Payments', '$ '.Payment::where('project_id',Filament::getTenant()->id)->sum('amount_paid'))
                 ->description('Total Payments Recorded')
                 ->icon('payments')
                  ->color('warning'),

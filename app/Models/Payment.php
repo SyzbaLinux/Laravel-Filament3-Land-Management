@@ -23,4 +23,8 @@ class Payment extends Model
     {
         return $this->belongsTo(Stand::class);
     }
+    public function installment(): belongsTo
+    {
+        return $this->belongsTo(Installment::class);
+    }
 }

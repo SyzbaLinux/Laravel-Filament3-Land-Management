@@ -23,15 +23,15 @@ class DatabaseSeeder extends Seeder
          ]);
 
          \App\Models\Project::create([
-             'name' => 'Teachers Union',
-             'slug' => 'teachers-union',
+             'name' => 'Boronia Farm',
+             'slug' => 'boronia-farm',
          ]);
 
          \App\Models\Setting::create([
             'project_id'    =>1,
-            'company_name'  =>'Company Name',
-            'address'       =>'Company Address',
-            'email'         =>'info@example.com',
+            'company_name'  =>'NEW CENTURY PRODUCTIONS (PVT) LTD',
+            'address'       =>'53 Five Avenue Harare',
+            'email'         =>'info@chiedzapark.com',
             'logo'          =>'/images/logo.png',
          ]);
 

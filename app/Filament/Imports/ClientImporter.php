@@ -17,6 +17,9 @@ class ClientImporter extends Importer
             ImportColumn::make('first_name'),
             ImportColumn::make('middle_name'),
             ImportColumn::make('last_name'),
+            ImportColumn::make('phone'),
+            ImportColumn::make('natID'),
+            ImportColumn::make('address'),
             ImportColumn::make('project_id'),
         ];
     }
@@ -26,6 +29,8 @@ class ClientImporter extends Importer
         // return Client::firstOrNew([
         //     // Update existing records, matching them by `$this->data['column_name']`
         //     'email' => $this->data['email'],
+
+//        Galic
         // ]);
 
         return new Client();
