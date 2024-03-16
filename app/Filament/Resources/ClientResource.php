@@ -8,6 +8,8 @@ use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,6 +24,7 @@ class ClientResource extends Resource
     protected static ?string $navigationIcon = 'tenants';
     protected static ?int $navigationSort = 2;
     protected static ?string $navigationLabel = 'List Clients';
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {
@@ -90,19 +93,26 @@ class ClientResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListClients::route('/'),
-            'create' => Pages\CreateClient::route('/create'),
-            'edit' => Pages\EditClient::route('/{record}/edit'),
+            'index'     => Pages\ListClients::route('/'),
+            'create'    => Pages\CreateClient::route('/create'),
+            'edit'      => Pages\EditClient::route('/{record}/edit'),
+            'view'      => Pages\ViewClient::route('/{record}/view'),
+            'contracts' => Pages\ClientContracts::route('/{record}/contracts'),
         ];
+    }
+
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewClient::class,
+            Pages\ClientContracts::class,
+            Pages\EditClient::class,
+        ]);
     }
 }

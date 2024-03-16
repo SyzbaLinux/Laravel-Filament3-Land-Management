@@ -9,6 +9,8 @@ use Filament\Resources\Pages\ListRecords;
 class ListClients extends ListRecords
 {
     protected static string $resource = ClientResource::class;
+    protected static ?string $title = 'All Clients';
+    protected static ?string $navigationIcon = 'tenants';
 
     protected function getHeaderActions(): array
     {
