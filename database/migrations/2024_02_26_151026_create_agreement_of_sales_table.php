@@ -20,7 +20,14 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->date('date_signed')->nullable();
             $table->decimal('agreement_fee', 60, 2)->nullable();
+
+            $table->decimal('stand_price', 60, 2)->nullable();
+            $table->decimal('other_costs', 60, 2)->nullable();
+            $table->decimal('deposit', 60, 2)->nullable();
             $table->decimal('monthly_payment', 60, 2);
+            $table->integer('number_of_installments')->nullable();
+
+
             $table->string('document')->nullable();
             $table->boolean('is_active')->default(1);
             $table->timestamps();

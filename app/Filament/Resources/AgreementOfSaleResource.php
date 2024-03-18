@@ -11,6 +11,7 @@ use App\Models\Client;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -31,6 +32,7 @@ class  AgreementOfSaleResource extends Resource
     protected static ?string $navigationIcon = 'agreementofsale';
     protected static ?string $navigationLabel = 'Clients & Contracts';
 
+
     public static function form(Form $form): Form
     {
         return $form
@@ -42,20 +44,186 @@ class  AgreementOfSaleResource extends Resource
                     ->label('Select Client')
                     ->searchable()
                     ->required()
+                    ->createOptionForm([
+                        Forms\Components\Section::make('Tenant Details')->schema([
+
+                            Forms\Components\Hidden::make('project_id')->default(Filament::getTenant()->id),
+
+                            Forms\Components\TextInput::make('first_name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('middle_name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('last_name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('dob')
+                                ->native(false)
+                                ->closeOnDateSelection()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('email')
+                                ->columnSpan(4),
+
+                            Forms\Components\TextInput::make('phone')
+                                ->columnSpan(4),
+
+                            Forms\Components\TextInput::make('natID')
+                                ->label('National ID')
+                                ->columnSpan(4),
+
+                            Forms\Components\Textarea::make('address')
+                                ->columnSpan(6),
+
+                        ])->columns(12)
+                    ])
                     ->columnSpan(4),
 
                 Forms\Components\Select::make('stand_id')
+                    ->relationship('stand','stand_number')
                     ->preload()
                     ->required()
                     ->label('Select Stand')
                     ->searchable()
-                    ->options( fn () => \App\Models\Stand::whereNotNull('stand_number')->whereDoesntHave('client')->pluck('stand_number', 'id'))
+                    ->createOptionForm([
+                        Forms\Components\Section::make()->schema([
+
+                            Forms\Components\Hidden::make('project_id')->default(Filament::getTenant()->id),
+
+
+                            Forms\Components\TextInput::make('stand_number')
+                                ->label('Stand No')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('square_metres')
+                                ->label('Stand Square Metres')
+                                ->numeric()
+                                ->default(300)
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('price')
+                                ->label('Stand Price')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('electrification_costs')
+                                ->label('Other Costs')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                        ])->columns(12)
+                    ])
+                     ->columnSpan(4),
+
+                Forms\Components\TextInput::make('stand_price')
+                    ->label('Stand Price')
+                    ->numeric()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
+                        if($get('stand_price')
+                            &&
+                            $get('other_costs')
+                            &&
+                            $get('number_of_installments')
+                            &&
+                            $get('deposit')
+                        ){
+                            $price       =   $get('stand_price');
+                            $other_costs =   $get('other_costs');
+                            $total       = $price + $other_costs;
+                            $balance     = $total - $get('deposit');
+                            $monthly     = number_format($balance/$get('number_of_installments'),2);
+                            $set('monthly_payment', $monthly);
+                        }
+                    })
                     ->columnSpan(4),
 
-                Forms\Components\TextInput::make('monthly_payment')
-                    ->label('Monthly Payment')
-                    ->numeric()
-                    ->columnSpan(4),
+                //Pricing and Installments
+
+                Forms\Components\Section::make('Pricing & Payments')->schema([
+
+                    Forms\Components\TextInput::make('other_costs')
+                        ->label('Other Costs')
+                        ->numeric()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
+                            if($get('stand_price')
+                                &&
+                                $get('other_costs')
+                                &&
+                                $get('number_of_installments')
+                                &&
+                                $get('deposit')
+                            ){
+                                $price       =   $get('stand_price');
+                                $other_costs =   $get('other_costs');
+                                $total       = $price + $other_costs;
+                                $balance     = $total - $get('deposit');
+                                $monthly     = number_format($balance/$get('number_of_installments'),2);
+                                $set('monthly_payment', $monthly);
+                            }
+                        })
+                        ->columnSpan(3),
+
+
+                    Forms\Components\TextInput::make('deposit')
+                        ->label('Deposit Paid')
+                        ->numeric()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
+                            if($get('stand_price')
+                                &&
+                                $get('other_costs')
+                                &&
+                                $get('number_of_installments')
+                                &&
+                                $get('deposit')
+                            ){
+                                $price       =   $get('stand_price');
+                                $other_costs =   $get('other_costs');
+                                $total       = $price + $other_costs;
+                                $balance     = $total - $get('deposit');
+                                $monthly     = number_format($balance/$get('number_of_installments'),2);
+                                $set('monthly_payment', $monthly);
+                            }
+                        })
+                        ->columnSpan(3),
+
+                    Forms\Components\TextInput::make('number_of_installments')
+                        ->label('Number of Installments')
+                        ->numeric()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
+                            if($get('stand_price')
+                                &&
+                                $get('other_costs')
+                                &&
+                                $get('number_of_installments')
+                                &&
+                                $get('deposit')
+                            ){
+                                $price       = $get('stand_price');
+                                $other_costs = $get('other_costs');
+                                $total       = $price + $other_costs;
+                                $balance     = $total - $get('deposit');
+                                $monthly     = number_format($balance/$get('number_of_installments'),2);
+                                $set('monthly_payment', $monthly);
+                            }
+                        })
+                        ->columnSpan(3),
+
+                    Forms\Components\TextInput::make('monthly_payment')
+                        ->label('Monthly Payment')
+                        ->numeric()
+                        ->dehydrated()
+                        ->columnSpan(3),
+
+
+
+                ])->columns(12),
 
 
 
