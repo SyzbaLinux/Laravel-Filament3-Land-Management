@@ -65,11 +65,18 @@
             @endif
         </table>
 
-        <div class="mt-5">
-            <b>Address:</b>
+        <div class="mt-5 mb-5">
+            <b>Start Date:</b> {{ date('d-M-Y',strtotime($details->start_date))  }} &nbsp;|&nbsp;  <b>End Date:</b> {{ date('d-M-Y',strtotime($details->end_date)) }}
         </div>
-        <div>
-            <b>Phone:</b>
+        <div class="mt-5 mb-5">
+            <b>Address:</b>
+            {{ $details->client['address']  }}
+        </div>
+        <div class="mb-5">
+            <b>Phone:</b>  {{ $details->client['email']  }}
+        </div>
+        <div class="mb-5">
+            <b>Phone:</b>  {{ $details->client['phone']  }}
         </div>
     </div>
 </x-filament-panels::page>

@@ -8,6 +8,7 @@ use App\Filament\Resources\AgreementOfSaleResource\RelationManagers;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Models\AgreementOfSale;
 use App\Models\Client;
+use App\Models\Stand;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -83,11 +84,36 @@ class  AgreementOfSaleResource extends Resource
                     ->columnSpan(4),
 
                 Forms\Components\Select::make('stand_id')
-                    ->relationship('stand','stand_number')
                     ->preload()
                     ->required()
                     ->label('Select Stand')
                     ->searchable()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set, $state){
+
+                        if($state){
+                            $stand = Stand::find($get('stand_id'));
+                            $set('stand_price', $stand->price);
+                            $set('other_costs', $stand->electrification_costs);
+
+
+                            if($get('stand_price')
+                                &&
+                                $get('other_costs')
+                                &&
+                                $get('number_of_installments')
+                                &&
+                                $get('deposit')
+                            ){
+
+                                $total       = $get('stand_price') + $get('other_costs') ;
+                                $balance     = $total - $get('deposit');
+                                $monthly     = number_format($balance/$get('number_of_installments'),2);
+                                $set('monthly_payment', $monthly);
+
+                            }
+                        }
+                    })
                     ->createOptionForm([
                         Forms\Components\Section::make()->schema([
 
@@ -116,7 +142,12 @@ class  AgreementOfSaleResource extends Resource
 
                         ])->columns(12)
                     ])
-                     ->columnSpan(4),
+                    ->createOptionUsing(function (array $data): int {
+                        return Stand::create($data)->getKey();
+                    })
+                    ->options( fn () => \App\Models\Stand::whereNotNull('stand_number')->whereDoesntHave('client')->pluck('stand_number', 'id'))
+
+                    ->columnSpan(4),
 
                 Forms\Components\TextInput::make('stand_price')
                     ->label('Stand Price')
@@ -148,6 +179,7 @@ class  AgreementOfSaleResource extends Resource
                     Forms\Components\TextInput::make('other_costs')
                         ->label('Other Costs')
                         ->numeric()
+                        ->default(2600)
                         ->live(onBlur: true)
                         ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
                             if($get('stand_price')
@@ -172,6 +204,7 @@ class  AgreementOfSaleResource extends Resource
                     Forms\Components\TextInput::make('deposit')
                         ->label('Deposit Paid')
                         ->numeric()
+                        ->default(300)
                         ->live(onBlur: true)
                         ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
                             if($get('stand_price')
@@ -195,6 +228,7 @@ class  AgreementOfSaleResource extends Resource
                     Forms\Components\TextInput::make('number_of_installments')
                         ->label('Number of Installments')
                         ->numeric()
+                        ->default(72)
                         ->live(onBlur: true)
                         ->afterStateUpdated(function (Builder $query, Get $get, Forms\Set $set){
                             if($get('stand_price')

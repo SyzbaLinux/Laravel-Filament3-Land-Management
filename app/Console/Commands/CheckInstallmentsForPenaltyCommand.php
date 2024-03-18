@@ -40,57 +40,20 @@ class CheckInstallmentsForPenaltyCommand extends Command
         $currentMonth = intval(date('m'));
         $currentYear = intval(date('Y'));
 
-// Query installments that meet the conditions in batches of 100
-        Installment::where(function ($query) use ($currentMonth, $currentYear) {
-            $query->where('month', '<=', $currentMonth)
-                ->where('year', '<=', $currentYear)
-                ->whereNull('payment_id')
-                ->orWhereHas('payment', function ($query) {
-                    $query->where('is_paid_infull', '=', 0);
-                });
 
-        })->chunk(100, function ($installments) {
-
-
-
-            foreach ($installments as $installment ){
-
-                // Check if a penalty already exists for this installment
-                $existingPenalty = Penalt::where('generated_for_month', $installment->month)
-                    ->where('generated_for_year', $installment->year)
-                    ->where('agreement_of_sale_id', $installment->agreement_of_sale_id)
-                    ->first();
-
-//                Log::info('record Found ' .$existingPenalty . ' rec');
-
-                if(!$existingPenalty){
-
-                    // Create a penalty
+        Installment::where('year', '<=', $currentYear)
+            ->whereNull('payment_id')
+            ->chunk(100, function ($installments){
+                foreach ($installments as $installment ){
+                    //add penalt
                     $agreement = AgreementOfSale::find($installment->agreement_of_sale_id);
-                    //penalty
-                    Penalt::create([
-                        'project_id'            => $installment->project_id,
-                        'client_id'             => $installment->client_id,
-                        'stand_id'              => $installment->stand_id,
-                        'agreement_of_sale_id'  => $installment->agreement_of_sale_id,
-                        'percentage'            => 10, // Set your percentage here
-                        'date_generated'        => now(),
-                        'amount_charged'        => (10 / 100) * $agreement->monthly_payment, // Set your amount charged here
-                        'generated_for_month'   => $installment->month,
-                        'generated_for_year'    => $installment->year
-                    ]);
+                     //$installment  = Installment::find()
+                        $installment->penalty   =  (10 / 100) * $agreement->monthly_payment;
+                        $installment->processed =  1;
+                        $installment->save();
                 }
-            }
 
-            // For each installment, create a penalty if payment doesn't exist
-//            foreach ($installments as $installment) {
-//
-//                if (!$existingPenalty) {
-//
-//                }
-//            }
-        });
-
+            });
 
     }
 
