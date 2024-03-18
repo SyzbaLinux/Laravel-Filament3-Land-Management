@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('stand_number')->nullable();
             $table->string('square_metres')->nullable();
             $table->decimal('price',20,2)->nullable();
+            $table->decimal('electrification_costs',20,2)->nullable();
             $table->mediumText('description')->nullable();
             $table->date('listing_date')->nullable();
             $table->boolean('is_taken')->default(0);

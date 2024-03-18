@@ -36,14 +36,19 @@ class ClientResource extends Resource
 
                     Forms\Components\TextInput::make('first_name')
                         ->required()
-                        ->columnSpan(4),
+                        ->columnSpan(3),
 
                     Forms\Components\TextInput::make('middle_name')
-                        ->columnSpan(4),
+                        ->columnSpan(3),
 
                     Forms\Components\TextInput::make('last_name')
                         ->required()
-                        ->columnSpan(4),
+                        ->columnSpan(3),
+
+                    Forms\Components\DatePicker::make('dob')
+                        ->native(false)
+                        ->closeOnDateSelection()
+                        ->columnSpan(3),
 
                     Forms\Components\TextInput::make('email')
                         ->columnSpan(3),

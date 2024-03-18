@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id');
             $table->foreignId('client_id');
+            $table->foreignId('agreement_of_sale_id')->nullable();
+            $table->foreignId('installment_id')->nullable();
             $table->foreignId('stand_number')->nullable();
             $table->foreignId('invoice_id')->nullable();
             $table->string('receipt_number')->nullable();
             $table->date('receipt_date');
             $table->decimal('amount_paid',30,2);
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('payment_method')->default('cash');
             $table->string('currency');
             $table->mediumText('amount_in_words')->nullable();

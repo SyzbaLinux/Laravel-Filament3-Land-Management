@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\AgreementCreated;
+use App\Events\PaymentAdded;
 use App\Listeners\AgreementofSaleCreatedLister;
+use App\Listeners\PaymentAddedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,6 +26,10 @@ class EventServiceProvider extends ServiceProvider
 
         AgreementCreated::class => [
             AgreementofSaleCreatedLister::class,
+        ],
+
+        PaymentAdded::class => [
+            PaymentAddedListener::class,
         ],
     ];
 

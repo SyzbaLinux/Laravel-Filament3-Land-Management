@@ -106,9 +106,6 @@ class  AgreementOfSaleResource extends Resource
                 Tables\Columns\TextColumn::make('end_date')->date()->searchable(),
                 Tables\Columns\TextColumn::make('agreement_fee')->prefix('$')->searchable(),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button(),
                 Tables\Actions\EditAction::make()->button(),
@@ -145,11 +142,4 @@ class  AgreementOfSaleResource extends Resource
         ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist
-            ->schema([
-                TextEntry::make('client.first_name')
-            ]);
-    }
 }

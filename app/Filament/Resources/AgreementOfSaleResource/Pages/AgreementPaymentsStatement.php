@@ -13,4 +13,5 @@ class AgreementPaymentsStatement extends ViewRecord
     protected static ?string $navigationIcon = 'statement';
 
     protected static string $view = 'filament.resources.agreement-of-sale-resource.pages.agreement-payments-statement';
+
 }
