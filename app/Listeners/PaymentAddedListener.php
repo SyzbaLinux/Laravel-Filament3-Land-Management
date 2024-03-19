@@ -27,13 +27,30 @@ class PaymentAddedListener  implements ShouldQueue
         if($event->payment->installment_id){
 
             $installment                 = Installment::find($event->payment->installment_id);
-            $installment->payment_id     = $event->payment->id;
-            $installment->amount         = $event->payment->amount_paid;
 
-            if($event->payment->amount_paid >= $installment->amount)
-            { // if amount is greater than install set as paid in full if it can pay the next add for the next
 
-                $installment->is_paid_infull = 1;
+            if($event->payment->payPenalty ===1){
+
+                 $installment->penalty_paid_amount     = $event->payment->amount_paid;
+                 $installment->penalty_payment_id      = $event->payment->id;
+                 $installment->date_penalty_paid       = $event->payment->receipt_date;
+
+                if($event->payment->amount_paid >= $installment->penalty)
+                {
+                    $installment->is_penalty_paid_infull = 1;
+                }
+
+
+            }else{
+
+
+                $installment->payment_id     = $event->payment->id;
+                $installment->amount         = $event->payment->amount_paid;
+
+                if($event->payment->amount_paid >= $installment->amount)
+                {
+                    $installment->is_paid_infull = 1;
+                }
             }
 
             $installment->save();

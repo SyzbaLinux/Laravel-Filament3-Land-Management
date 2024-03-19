@@ -21,11 +21,24 @@ return new class extends Migration
             $table->string('month');
             $table->string('year');
             $table->boolean('processed')->default(0);
-            $table->float('amount')->nullable();
-            $table->float('penalty')->nullable();
+
+
             $table->decimal('balance_bf',50,2)->nullable();
             $table->decimal('balance',50,2)->nullable();
+            $table->float('amount')->nullable();
             $table->boolean('is_paid_infull')->nullable();
+
+
+
+            $table->float('penalty')->nullable(); //amount charged
+            $table->float('penalty_paid_amount')->nullable(); //amount charged
+            $table->foreignId('penalty_payment_id')->nullable(); //amount charged
+            $table->boolean('is_penalty_paid_infull')->nullable();
+            $table->date('date_penalty_paid')->nullable();
+
+
+
+
             $table->timestamps();
         });
     }

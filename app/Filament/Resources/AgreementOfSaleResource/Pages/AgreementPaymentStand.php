@@ -9,17 +9,12 @@ use App\Models\Payment;
 use App\Models\Stand;
 use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
-use Filament\Forms\Get;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Filament\Infolists\Infolist;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -72,7 +67,7 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
     public function getHeaderActions() : array
     {
         return [
-            CreateAction::make('addStand')
+            CreateAction::make('addPayment')
                 ->label('Add Payment')
                 ->model(Payment::class)
                 ->form([
@@ -93,6 +88,7 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
 
                         Forms\Components\TextInput::make('amount_paid')
                             ->label('Amount Paid')
+                            ->default($this->record->monthly_payment)
                             ->numeric()
                             ->columnSpan(4),
 
@@ -118,9 +114,8 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
                             ->columnSpan(4),
 
                         Forms\Components\Select::make('installment_id')
-                            ->options(Installment::where('agreement_of_sale_id',$this->record->id)
-                                ->pluck('month','id'))
-                            ->label('Select Installment')
+                            ->options(Installment::where('agreement_of_sale_id',$this->record->id)->whereNull('is_paid_infull')->pluck('month','id'))
+                            ->label('Select Installment Month')
                             ->columnSpan(3),
 
                         Forms\Components\Textarea::make('description')

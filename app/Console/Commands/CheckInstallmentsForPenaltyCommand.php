@@ -15,7 +15,7 @@ class CheckInstallmentsForPenaltyCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'check:installments-penalty-new';
+    protected $signature = 'check:installments';
 
     /**
      * The console command description.
