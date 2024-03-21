@@ -30,6 +30,8 @@ return new class extends Migration
 
             $table->string('document')->nullable();
             $table->boolean('is_active')->default(1);
+            $table->boolean('has_vat')->default(0);
+            $table->boolean('has_endowments')->default(0);
             $table->timestamps();
         });
     }

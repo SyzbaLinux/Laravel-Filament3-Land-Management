@@ -19,6 +19,7 @@ class ClientImporter extends Importer
             ImportColumn::make('last_name'),
             ImportColumn::make('phone'),
             ImportColumn::make('natID'),
+            ImportColumn::make('email'),
             ImportColumn::make('address'),
             ImportColumn::make('project_id'),
         ];

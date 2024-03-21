@@ -14,6 +14,7 @@ class AgreementOfSale extends Model
 
     protected $dispatchesEvents = [
         'created' => AgreementCreated::class,
+        'updated' => AgreementCreated::class,
     ];
 
 

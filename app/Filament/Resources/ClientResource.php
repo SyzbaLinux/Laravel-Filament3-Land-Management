@@ -77,11 +77,13 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('client.full_name')
                     ->label('Client Name')
                     ->searchable(['first_name', 'last_name'])
                     ->sortable()
                     ->getStateUsing(fn ($record) => $record->first_name . ' ' . $record->last_name),
+
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('natID')->label('NatID')->searchable(),

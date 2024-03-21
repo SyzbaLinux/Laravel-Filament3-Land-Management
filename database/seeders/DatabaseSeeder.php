@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
          ]);
 
          \App\Models\Project::create([
-             'name' => 'Boronia Farm',
-             'slug' => 'boronia-farm',
+             'name' => 'Teachers Union',
+             'slug' => 'teachers-union',
          ]);
 
          \App\Models\Setting::create([

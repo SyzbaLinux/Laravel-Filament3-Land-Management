@@ -17,6 +17,8 @@ class StandImporter extends Importer
             ImportColumn::make('square_metres'),
             ImportColumn::make('stand_number'),
             ImportColumn::make('project_id'),
+            ImportColumn::make('price'),
+            ImportColumn::make('electrification_costs'),
         ];
     }
 

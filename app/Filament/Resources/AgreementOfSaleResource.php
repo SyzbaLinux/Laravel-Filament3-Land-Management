@@ -146,7 +146,6 @@ class  AgreementOfSaleResource extends Resource
                         return Stand::create($data)->getKey();
                     })
                     ->options( fn () => \App\Models\Stand::whereNotNull('stand_number')->whereDoesntHave('client')->pluck('stand_number', 'id'))
-
                     ->columnSpan(4),
 
                 Forms\Components\TextInput::make('stand_price')
@@ -286,7 +285,15 @@ class  AgreementOfSaleResource extends Resource
                     ->label('End Date')
                     ->closeOnDateSelection()
                     ->default(date('Y-m-d'))
-                    ->columnSpan(4),
+                    ->columnSpan(3),
+
+                Forms\Components\Toggle::make('has_vat')
+                    ->label('Has VAT')
+                    ->columnSpan(2),
+
+                Forms\Components\Toggle::make('has_endowments')
+                    ->label('Has Endowments')
+                    ->columnSpan(3),
 
                 Forms\Components\FileUpload::make('document')
                     ->columnSpan(4),
@@ -306,6 +313,7 @@ class  AgreementOfSaleResource extends Resource
                 Tables\Columns\TextColumn::make('date_signed')->searchable(),
                 Tables\Columns\TextColumn::make('start_date')->date()->searchable(),
                 Tables\Columns\TextColumn::make('end_date')->date()->searchable(),
+                Tables\Columns\TextColumn::make('monthly_payment')->prefix('$')->searchable(),
                 Tables\Columns\TextColumn::make('agreement_fee')->prefix('$')->searchable(),
             ])
             ->actions([
