@@ -18,3 +18,6 @@ Route::redirect('/', '/admin/login')->name('login');
 
 Route::get('/payment-receipt/{payment}', [\App\Http\Controllers\PaymentController::class,'receipt'])
     ->name('payment-receipt');
+
+Route::get('/link-payments/{agreement}', [\App\Http\Controllers\PaymentController::class,'link'] )
+    ->name('payment-link');

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class AgreementOfSale extends Model
 {
 
+
     protected $dispatchesEvents = [
         'created' => AgreementCreated::class,
         'updated' => AgreementCreated::class,
@@ -32,10 +33,20 @@ class AgreementOfSale extends Model
         return $this->hasMany(Stand::class);
     }
 
+//
+//    public function payments(): HasManyThrough
+//    {
+//         return $this->hasManyThrough(Payment::class, Stand::class);
+//    }
 
-    public function payments(): HasManyThrough
+    public function installments()
     {
-         return $this->hasManyThrough(Payment::class, Stand::class);
+        return $this->hasMany(Installment::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 
 }

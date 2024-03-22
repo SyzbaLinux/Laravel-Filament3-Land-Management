@@ -44,19 +44,15 @@ class PaymentsChart extends ApexChartWidget
     {
 
         $agreement = AgreementOfSale::find($this->agreement_id);
-        $stand     = Stand::find($agreement->stand_id);
-
 
         $start_date = Carbon::parse($agreement->start_date); // Parse the start date if it's not a Carbon instance.
-        $pastYears = Carbon::now()->diffInYears($start_date);
-
-       // dd(date('Y', strtotime($agreement->start_date))  + 1);
+        $pastYears  = Carbon::now()->diffInYears($start_date) + 1;
 
         $series = [];
 
         for($i = $pastYears; $i >= 0; $i--){
 
-            $yearData = Trend::query(Payment::query()->where('stand_number',$stand->stand_number))
+            $yearData = Trend::query(Payment::query()->where('agreement_of_sale_id',$this->agreement_id))
                 ->dateColumn('receipt_date')
                 ->between(
                     start: now()->startOfYear()->subYears($i),
@@ -72,10 +68,6 @@ class PaymentsChart extends ApexChartWidget
 
            array_push($series, $data);
         }
-
-
-
-
 
         return [
             'chart' => [

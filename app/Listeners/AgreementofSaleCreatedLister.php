@@ -29,15 +29,15 @@ class AgreementofSaleCreatedLister implements ShouldQueue
          $stand->agreement_of_sale_id = $event->agreementOfSale->id;
          $stand->save();
 
-         //Create blank installments sheet
+    //Create blank installments sheet
 
         $start_date = Carbon::parse($event->agreementOfSale->start_date);
         $end_date   = Carbon::parse($event->agreementOfSale->end_date);
 
-        // Ensure the start date is the first of the month for accurate calculation
+    // Ensure the start date is the first of the month for accurate calculation
         $start_date->startOfMonth();
 
-        // Calculate the period between the start and end dates
+    // Calculate the period between the start and end dates
         $period = $start_date->diffInMonths($end_date) + 1; // +1 to include the end month
 
         for ($i = 0; $i < $period; $i++) {

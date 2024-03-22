@@ -30,6 +30,12 @@ class ViewAgreemnt extends ViewRecord
 
         return [
 
+            CreateAction::make('linkPayments')
+                ->label('Link Payments')
+                ->model(Stand::class)
+                ->url(route('payment-link',['agreement'=>$this->record])),
+
+
             CreateAction::make('addStand')
                 ->label('Add Stand')
                 ->model(Stand::class)

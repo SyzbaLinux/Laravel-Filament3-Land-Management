@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\AgreementOfSale;
 use App\Models\Installment;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,6 +23,13 @@ class PaymentAddedListener  implements ShouldQueue
      */
     public function handle(object $event): void
     {
+
+        //links to client agreement
+        $agg  = AgreementOfSale::where('client_id',$event->payment->client_id)->first();
+        $event->payment->agreement_of_sale_id = $agg->id;
+        $event->payment->save();
+
+
         //Add payment id to Installments
 
         if($event->payment->installment_id){

@@ -34,12 +34,7 @@ class AgreementPaymentStand extends ViewRecord implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(
-                Payment::query()
-                    ->select('payments.*') // Adjust based on your actual column names
-                    ->join('stands', 'stands.stand_number', '=', 'payments.stand_number')
-                    ->where('stands.agreement_of_sale_id', $this->record->id) // Assuming $this->record is the current AgreementOfSale instance
-            )
+            ->query(Payment::query()->where('agreement_of_sale_id',$this->record->id))
             ->columns([
                 TextColumn::make('client.first_name')->searchable(),
                 TextColumn::make('receipt_date')->date()->label('Date Paid')->searchable(),
