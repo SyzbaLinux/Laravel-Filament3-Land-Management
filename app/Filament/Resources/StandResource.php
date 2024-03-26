@@ -21,6 +21,7 @@ class StandResource extends Resource
     protected static ?string $model = Stand::class;
 
     protected static ?string $navigationIcon = 'map';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {

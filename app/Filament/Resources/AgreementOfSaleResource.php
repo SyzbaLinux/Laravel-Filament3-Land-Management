@@ -29,9 +29,9 @@ class  AgreementOfSaleResource extends Resource
 {
     protected static ?string $model = AgreementOfSale::class;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
-
     protected static ?string $navigationIcon = 'agreementofsale';
     protected static ?string $navigationLabel = 'Clients & Contracts';
+    protected static ?int $navigationSort = 1;
 
 
     public static function form(Form $form): Form
@@ -337,7 +337,6 @@ class  AgreementOfSaleResource extends Resource
             'view'      => Pages\ViewAgreemnt::route('/{record}/view'),
             'payments'  => Pages\AgreementPaymentStand::route('/{record}/payments'),
             'statement' => Pages\AgreementPaymentsStatement::route('/{record}/statement'),
-            'penalties' => Pages\AgreementPaymentsPenalties::route('/{record}/penalties'),
         ];
     }
 
@@ -346,7 +345,6 @@ class  AgreementOfSaleResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewAgreemnt::class,
             Pages\AgreementPaymentStand::class,
-            Pages\AgreementPaymentsPenalties::class,
             Pages\AgreementPaymentsStatement::class,
             Pages\EditAgreementOfSale::class,
         ]);

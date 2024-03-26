@@ -53,5 +53,6 @@ class AgreementofSaleCreatedLister implements ShouldQueue
             $installment->year                 = $installmentDate->year;  // Extract the year
             $installment->save();
         }
+
     }
 }

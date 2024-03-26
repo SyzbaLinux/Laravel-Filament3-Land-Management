@@ -66,6 +66,10 @@
         </table>
 
         <div class="mt-5 mb-5">
+            <b>Purchase price:</b> {{  $record->stand_price }} <br>
+            <b>Additional Costs:</b> {{  $record->other_costs }}
+        </div>
+        <div class="mt-5 mb-5">
             <b>Start Date:</b> {{ date('d-M-Y',strtotime($details->start_date))  }} &nbsp;|&nbsp;  <b>End Date:</b> {{ date('d-M-Y',strtotime($details->end_date)) }}
         </div>
         <div class="mt-5 mb-5">

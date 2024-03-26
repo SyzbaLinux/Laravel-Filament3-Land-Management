@@ -17,6 +17,7 @@ class SettingResource extends Resource
     protected static ?string $model = Setting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {
